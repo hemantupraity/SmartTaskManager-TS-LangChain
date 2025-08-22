@@ -1,6 +1,119 @@
-# Smart Task Manager
+# Smart Task Manager (Frontend)
 
-A modern task management application with AI-powered task suggestions and smart reminders, built with Angular 19 and Node.js.
+A modern task management application with AI-powered task suggestions and smart reminders, built with Angular 19 and Node.js. This frontend application provides an intuitive interface for managing tasks, integrating with Google Calendar, and leveraging AI for smart task management.
+
+## 🏗️ Project Structure
+
+```
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── components/        # Reusable UI components
+│   │   │   ├── task-list/     # Task list component
+│   │   │   ├── task-form/     # Task creation/editing form
+│   │   │   └── ...
+│   │   ├── services/          # Data services
+│   │   │   ├── task.service.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── ...
+│   │   ├── models/            # Data models
+│   │   │   └── task.model.ts
+│   │   ├── guards/            # Route guards
+│   │   ├── interceptors/      # HTTP interceptors
+│   │   └── app.module.ts      # Root module
+│   ├── assets/                # Static assets
+│   ├── environments/          # Environment configurations
+│   │   ├── environment.ts
+│   │   └── environment.prod.ts
+│   └── styles/                # Global styles
+└── angular.json               # Angular CLI configuration
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm 9+ or Yarn
+- Angular CLI (install with `npm install -g @angular/cli`)
+- Backend server (see [Backend README](../backend/README.md))
+
+### Environment Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp src/environments/environment.example.ts src/environments/environment.ts
+   ```
+
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
+
+2. Start the development server:
+   ```bash
+   ng serve
+   ```
+
+3. Open your browser and navigate to `http://localhost:4200`
+
+## 🔧 Development
+
+### Build
+
+```bash
+# Development build
+ng build
+
+# Production build
+ng build --configuration=production
+```
+
+### Running Tests
+
+```bash
+# Unit tests
+ng test
+
+# End-to-end tests
+ng e2e
+
+# Code coverage
+ng test --no-watch --code-coverage
+```
+
+### Linting
+
+```bash
+# Run linter
+ng lint
+
+# Fix linting issues
+ng lint --fix
+```
+
+## 📱 Responsive Design
+
+The application is built with a mobile-first approach and includes responsive breakpoints:
+
+- Mobile: < 768px
+- Tablet: 768px - 1024px
+- Desktop: > 1024px
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Features
 
@@ -167,7 +280,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  Made with ❤️ and ☕
+  Made with ❤️ 
 </div>
 
 # Smart Task Manager Frontend

@@ -2,6 +2,151 @@
 
 A powerful, AI-driven task management API built with Node.js, TypeScript, and LangChain. This backend provides intelligent task processing, prioritization, and reminder capabilities through a clean RESTful API.
 
+## 🏗️ Project Structure
+
+```
+backend/
+├── src/
+│   ├── agents/            # AI agents for task management
+│   ├── chains/            # LangChain processing chains
+│   ├── config/            # Configuration files
+│   ├── controllers/       # API controllers
+│   ├── middleware/        # Express middleware
+│   ├── models/            # Database models
+│   ├── routes/            # API route definitions
+│   ├── services/          # Business logic
+│   ├── tools/             # External tool integrations
+│   ├── types/             # TypeScript type definitions
+│   ├── utils/             # Utility functions
+│   ├── index.ts           # Application entry point
+│   └── loadEnv.ts         # Environment configuration
+├── .env.example           # Example environment variables
+└── package.json           # Project dependencies
+```
+
+## 🔑 Environment Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your configuration:
+
+```env
+# -----------------------------
+# 🗃️ Notion Config
+# -----------------------------
+NOTION_API_KEY=ntn_NotionKey              # Your Notion API key
+NOTION_DATABASE_ID=NotionTaskDBId         # Your Notion Task Database ID
+OPENAI_API_KEY=sk-proj-openAIKey          # OpenAI API key for AI features
+HUGGINGFACE_API_TOKEN=hf_token            # Hugging Face API token
+NOTION_GOOGLE_TOKENS_DB_ID=TokensDBId     # Notion DB ID for storing Google tokens
+
+# -----------------------------
+# 🌐 Server / Backend Config
+# -----------------------------
+PORT=3003                                 # Port for the backend server
+
+# -----------------------------
+# 📅 Google OAuth Config
+# -----------------------------
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:3003/api/google/oauth2callback
+GOOGLE_CALENDAR_ID=primary                # or your specific calendar ID
+GOOGLE_SCOPES=https://www.googleapis.com/auth/calendar
+
+# -----------------------------
+# 🔐 Session & Security
+# -----------------------------
+SESSION_SECRET=replace_with_a_long_random_string  # Used for session encryption
+
+## 🚀 Development
+
+### Installation
+
+```bash
+npm install
+```
+
+### Running the Server
+
+```bash
+# Development mode with hot-reload
+npm run dev
+
+# Production build
+npm run build
+npm start
+```
+
+### Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run tests with coverage
+npm run test:cov
+
+# Run e2e tests
+npm run test:e2e
+```
+
+## 📚 API Documentation
+
+### Authentication URL for Google OAuth
+GET http://localhost:3003/api/google/auth/url?user_id=email@gmail.com
+
+### Tasks
+
+- `GET /api/tasks` - List all tasks
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/:id` - Get task by ID
+- `PUT /api/tasks/:id` - Update task
+- `DELETE /api/tasks/:id` - Delete task
+
+### Google Calendar Integration
+
+- `GET /api/calendar/events` - List calendar events
+- `POST /api/calendar/events` - Create calendar event from task
+- `DELETE /api/calendar/events/:eventId` - Delete calendar event
+
+## 🔄 Environment Variables Reference
+
+### Notion Configuration
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NOTION_API_KEY` | Yes | Your Notion integration API key |
+| `NOTION_DATABASE_ID` | Yes | ID of your Notion tasks database |
+| `NOTION_GOOGLE_TOKENS_DB_ID` | Yes | Notion DB ID for storing Google OAuth tokens |
+
+### Server Configuration
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PORT` | Yes | Port number the server will run on (default: 3003) |
+
+### Google OAuth Configuration
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GOOGLE_CLIENT_ID` | Yes | Google OAuth 2.0 Client ID |
+| `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth 2.0 Client Secret |
+| `GOOGLE_REDIRECT_URI` | Yes | Callback URL for Google OAuth |
+| `GOOGLE_CALENDAR_ID` | No | Google Calendar ID (default: 'primary') |
+| `GOOGLE_SCOPES` | No | Required Google API scopes |
+
+### AI Configuration
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENAI_API_KEY` | No | API key for OpenAI services |
+| `HUGGINGFACE_API_TOKEN` | No | API token for Hugging Face models |
+
+### Security
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `SESSION_SECRET` | Yes | Secret key for session encryption |
+
 ## 🌟 Features
 
 - **AI-Powered Task Management**
@@ -89,7 +234,7 @@ http://localhost:3003/api
 
 ### Endpoints
 
-#### Tasks
+#### Tasks (go to env sample file for more details, named as ".env.example" in backend)
 - `GET /tasks` - List all tasks
 - `POST /tasks` - Create a new task
 - `GET /tasks/:id` - Get a specific task
