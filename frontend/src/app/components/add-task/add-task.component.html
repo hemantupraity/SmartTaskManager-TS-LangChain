@@ -1,0 +1,63 @@
+<div class="add-task-container">
+  <h4>{{ isEditing ? 'Edit Task' : 'Add New Task' }}</h4>
+  
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <form (ngSubmit)="submitTask()" #taskForm="ngForm">
+    <div class="form-group">
+      <label for="taskName">Task Name</label>
+      <input type="text" class="form-control" id="taskName" name="taskName" 
+             [(ngModel)]="task.taskName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Due Date</label>
+      <input type="date" class="form-control" id="dueDate" name="dueDate"
+             [(ngModel)]="task.dueDate" required>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select class="form-control" id="priority" name="priority"
+              [(ngModel)]="task.priority" required>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea class="form-control" id="notes" name="notes"
+                [(ngModel)]="task.notes" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="reminder">Reminder</label>
+      <input type="datetime-local" class="form-control" id="reminder" name="reminder"
+             [(ngModel)]="task.reminder">
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select class="form-control" id="status" name="status"
+              [(ngModel)]="task.status">
+        <option value="ToDo">To Do</option>
+        <option value="InProgress">In Progress</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Saving...' : (isEditing ? 'Update Task' : 'Add Task') }}
+      </button>
+    </div>
+  </form>
+</div>

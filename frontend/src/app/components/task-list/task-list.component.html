@@ -1,0 +1,208 @@
+<!-- Add Task Modal -->
+<div class="modal-backdrop fade show" *ngIf="showAddTask"></div>
+<div class="modal custom-modal" *ngIf="showAddTask">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header align-items-center">
+        <!-- <h5 class="modal-title">Add New Task</h5> -->
+        <button style="background-color:red" type="button" class="btn btn-close-modal" (click)="showAddTask = false" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<app-add-task *ngIf="showAddTask" [isEditing]="isEditing" [taskToEdit]="selectedTask" (taskAdded)="onTaskAdded()">
+</app-add-task>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<div class="task-list-container">
+  <h1 style="text-align: center;">Task List</h1>
+  <button class="btn btn-primary mb-3" (click)="openAddTaskModal()">Add Task</button>
+  &nbsp;&nbsp;
+  <button class="btn btn-primary mb-3" (click)="refreshTasks()">Refresh Task List</button>
+  &nbsp;&nbsp;
+  <button 
+    mat-raised-button
+    color="primary" 
+    class="reminder-margin"
+    title="Get reminders based on priority and due dates"
+    (click)="generateSmartReminders()"
+    [disabled]="isLoadingReminders">
+    <mat-icon>notifications_active</mat-icon>
+    {{ isLoadingReminders ? 'Generating...' : 'Smart Reminders' }}
+  </button>
+  
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <span>Loading Data...</span>
+  </div>
+
+  <div *ngIf="isDeleting" class="loading-indicator">
+    <div class="spinner"></div>
+    <span>Deleting Data...</span>
+  </div>
+  
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+    <button (click)="error = null" class="close-btn">&times;</button>
+  </div>
+  
+  <div class="task-filters">
+    <button (click)="getTodayTaskSummary()" class="btn btn-info" [disabled]="isLoading">
+      <span *ngIf="!isLoading || !summary">Get Today's Task Summary</span>
+    </button>
+    <button (click)="getPrioritizedTasksForToday()" class="btn btn-warning" [disabled]="isLoading">
+      {{ priorities.length > 0 ? 'Refresh Priorities' : "Show Today's Priorities" }}
+    </button>
+    <button (click)="getNextTaskRecommendation()" class="btn btn-nextTask" [disabled]="isLoading">
+      <span *ngIf="!isLoading || !summary">Next Task Recommendation</span>
+    </button>
+  </div>
+
+  <div *ngIf="summary" class="summary-box">
+    <div class="summary-header">
+      <h4>Summary</h4>
+      <button (click)="summary = ''" class="close-btn" title="Close summary">&times;</button>
+    </div>
+    <p>{{ summary }}</p>
+  </div>
+
+  <div *ngIf="suggestion" class="summary-box">
+    <div class="summary-header">
+      <h4>Next Task</h4>
+      <button (click)="suggestion = ''" class="close-btn" title="Close Suggestion">&times;</button>
+    </div>
+    <p [innerHTML]="suggestion"></p>
+  </div>
+
+  <div *ngIf="priorities.length > 0 && showPriorities" class="priorities-section">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="text-align: left;">
+        <h4>Today's Priorities</h4>
+      </div>
+      <div style="text-align: right;">
+        <button 
+          style="background-color: red;" 
+          type="button" 
+          title="Hide Priorities" 
+          class="btn btn-close-modal" 
+          (click)="hidePriorities()" 
+          aria-label="Close">
+          X
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of priorities">
+            <td>
+              <span class="priority-badge" [ngClass]="'priority-' + p.priority">
+                {{ p.priority | titlecase }}
+              </span>
+            </td>
+            <td>{{ p.taskName }}</td>
+            <td>{{ p.dueDate | date:'mediumDate' }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-' + p.status">
+                {{ p.status | titlecase }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="showReminders" class="reminders-container">
+    <div class="reminders-header">
+      <h3>Smart Reminders</h3>
+      <button mat-icon-button (click)="closeReminders()" class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <div *ngIf="smartReminders.length > 0" class="reminders-list">
+      <mat-card *ngFor="let reminder of smartReminders" class="reminder-card">
+        <mat-card-header>
+          <mat-card-title>{{ reminder.taskName }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ reminder.suggestedReminder | date:'medium' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ reminder.reason }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <div *ngIf="remindersError" class="error-message">
+      {{ remindersError }}
+    </div>
+    
+    <div *ngIf="isLoadingReminders" class="loading">
+      <mat-spinner diameter="30"></mat-spinner>
+      <span>Generating smart reminders...</span>
+    </div>
+  </div>
+
+  <div class="all-tasks">
+    <h4>All Tasks</h4>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Reminder</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of tasks">
+            <td><strong>{{ task.taskName || 'No title' }}</strong></td>
+            <td class="task-notes" [title]="task.notes">{{ task.notes || 'No description' }}</td>
+            <td>{{ task.dueDate ? (task.dueDate | date:'mediumDate') : 'No due date' }}</td>
+            <td>
+              <span class="priority-badge" [ngClass]="'priority-' + (task.priority || 'none')">
+                {{ task.priority ? task.priority : 'Not set' }}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-' + (task.status || 'none')">
+                {{ task.status ? task.status : 'Not set' }}
+              </span>
+            </td>
+            <td>{{ task.reminder ? (task.reminder | date:'short') : 'No reminder' }}</td>
+            <td style="padding: 10px 0px;">
+              <i class=' btn material-icons' title="Edit task" (click)="editTask(task.id)">edit</i>
+              <i class=' btn material-icons' title="Delete task" (click)="deleteTask(task.id)">delete</i>
+            </td>
+          </tr>
+          <tr *ngIf="!tasks.length">
+            <td colspan="7" class="text-center">No tasks found. Add a task to get started!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

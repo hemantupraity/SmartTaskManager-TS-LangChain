@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- Left Side - Add Task Form -->
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <!-- <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Add New Task</h5>
+        </div> -->
+        <!-- <div class="card-body">
+          <app-add-task (taskAdded)="onTaskAdded()"></app-add-task>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Right Side - Task List -->
+    <div class="col-md-8">
+      <div class="card">
+        <!-- <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Task List</h5>
+          <button class="btn btn-sm btn-light" (click)="refreshTasks()">
+            Refresh
+          </button>
+        </div> -->
+        <div class="card-body">
+          <app-task-list #taskList></app-task-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

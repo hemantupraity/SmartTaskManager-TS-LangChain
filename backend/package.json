@@ -1,0 +1,32 @@
+{
+    "name": "smart-task-manager-backend",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "scripts": {
+        "start": "ts-node-dev -P tsconfig.backend.json src/index.ts",
+        "build": "tsc -p tsconfig.backend.json"
+    },
+    "dependencies": {
+        "@huggingface/inference": "^2.8.1",
+        "@langchain/core": "^0.1.63",
+        "@langchain/openai": "^0.0.31",
+        "@notionhq/client": "^2.3.0",
+        "axios": "^1.6.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.6.1",
+        "express": "^4.18.2",
+        "express-session": "^1.18.2",
+        "googleapis": "^126.0.1",
+        "langchain": "0.1.12",
+        "notion-client": "^4.15.0",
+        "openai": "4.12.0"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/express-session": "^1.18.2",
+        "@types/node": "^20.19.11",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.4.0"
+    }
+}
